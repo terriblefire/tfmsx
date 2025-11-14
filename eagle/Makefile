@@ -26,6 +26,13 @@ camfiles: $(GERBERS)
 .PHONY: pdf
 pdf: $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf
 
+.PHONY: bom
+bom: $(BOARDPREFIX)_bom.csv
+
+$(BOARDPREFIX)_bom.csv: $(BOARDPREFIX).sch extract_bom.py
+	@echo "Generating BOM from $(BOARDPREFIX).sch..."
+	python3 extract_bom.py $(BOARDPREFIX).sch $@
+
 # Main board gerber generation
 $(GERBERS).zip: $(GERBERS)
 	@echo "Creating Gerber archive..."
@@ -46,7 +53,7 @@ $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf: $(BOARDPREFIX).sch
 
 # Clean targets
 .PHONY: clean
-clean: clean-gerbers clean-pdf
+clean: clean-gerbers clean-pdf clean-bom
 	@echo "Cleaned generated files"
 
 .PHONY: clean-pdf
@@ -54,9 +61,14 @@ clean-pdf:
 	rm -f *_*_*.pdf
 	@echo "Cleaned PDF files"
 
+.PHONY: clean-bom
+clean-bom:
+	rm -f *_bom.csv
+	@echo "Cleaned BOM files"
+
 .PHONY: clean-gerbers
 clean-gerbers:
-	-sudo rm -rf *_*_*/ 2>/dev/null || rm -rf *_*_*/ 2>/dev/null || true
+	rm -rf *_*_*/ 2>/dev/null || rm -rf *_*_*/ 2>/dev/null || true
 	rm -f *_*_*.zip
 	@echo "Cleaned Gerber files and directories"
 
@@ -84,6 +96,7 @@ help:
 	@echo "  gerbers       - Generate Gerber files and ZIP archive"
 	@echo "  camfiles      - Generate Gerber files only (no ZIP)"
 	@echo "  pdf           - Generate PDF schematic for main board"
+	@echo "  bom           - Generate Bill of Materials CSV from schematic"
 	@echo "  clean         - Remove generated PDF and Gerber files"
 	@echo "  clean-gerbers - Remove Gerber files and directories"
 	@echo "  clean-pdf     - Remove PDF files"

@@ -86,6 +86,7 @@ vsim.wlf
 *.job
 *.$$*
 *.$$$
+*_bom.csv
 
 # Eagle CAM Outputs (uncomment if you don't want to track gerbers)
 # *.GBL

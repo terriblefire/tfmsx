@@ -225,11 +225,31 @@ The `eagle/` directory includes a Makefile for automated Gerber generation using
 cd eagle
 make               # Generate Gerbers for main TFMSX board
 make pdf           # Generate PDF schematic for main board
+make bom           # Generate Bill of Materials (BOM) CSV
 ```
 
 Output files are named with git commit hash and date (e.g., `tfmsx_a1b2c3d_2025_11_14.zip`).
 
-**Requirements**: Docker with `terriblefire78/eagle:v1` and `terriblefire78/eagle-pdf` images.
+**Requirements**:
+- Docker with `terriblefire78/eagle:v1` and `terriblefire78/eagle-pdf` images (for gerbers and PDF)
+- Python 3 (for BOM generation)
+
+### Bill of Materials (BOM)
+
+Generate a CSV BOM from the schematic:
+
+```bash
+cd eagle
+make bom
+```
+
+This creates `tfmsx_bom.csv` with columns:
+- **Comment**: Component value/part number
+- **Designator**: Reference designators (e.g., C1, C2, R5)
+- **Footprint**: PCB footprint package
+- **LCSC Part #**: LCSC/JLCPCB part number (if available)
+
+The BOM groups identical components together for easy ordering and assembly.
 
 ## Contributing
 

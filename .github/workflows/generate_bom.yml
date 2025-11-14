@@ -1,0 +1,38 @@
+name: Generate BOM
+
+on:
+  push:
+    paths:
+      - 'eagle/*.sch'
+      - 'eagle/extract_bom.py'
+  workflow_dispatch:
+
+jobs:
+  generate-bom:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate BOM
+        run: |
+          cd eagle
+          python3 extract_bom.py tfmsx.sch tfmsx_bom.csv
+
+      - name: Upload BOM as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bom-csv
+          path: eagle/tfmsx_bom.csv
+          retention-days: 90
+
+      - name: Display BOM stats
+        run: |
+          echo "BOM generated successfully"
+          wc -l eagle/tfmsx_bom.csv
