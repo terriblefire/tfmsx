@@ -138,50 +138,7 @@ This script downloads MSX2 BIOS ROMs from the BlueMSX emulator repository and cr
 
 The final output is `default.rom`, which contains all four banks concatenated together. This allows the TFMSX hardware to support multiple MSX2 configurations by bank switching.
 
-**Note**: These ROMs are copyrighted by their respective manufacturers and are provided for use with original MSX hardware or authorized reproductions.
-
-## Testing
-
-The project includes extensive Verilog testbenches using Icarus Verilog.
-
-### Prerequisites
-
-- **Linux**: Icarus Verilog (`iverilog`) and VVP installed
-- **macOS/Windows**: Docker (automatically uses `terriblefire78/iverilog:v1` container)
-
-The test system automatically detects non-Linux platforms and runs tests in Docker.
-
-### Run All Tests
-
-```bash
-cd testsuite
-make all
-```
-
-### Run Specific Test Suite
-
-```bash
-cd testsuite/bus
-make                    # Bus interface tests (I/O, memory, slots)
-
-cd testsuite/system
-make                    # System integration tests (long-running)
-
-cd testsuite/vdpcheck
-make                    # VDP functionality verification
-```
-
-Tests automatically compile and execute, reporting pass/fail status. Note that system tests simulate 100μs of operation and may take several minutes to complete.
-
-### Fast Simulation
-
-Verilator-based cycle-accurate simulation with SDL display output:
-
-```bash
-cd testsuite/fastsim
-make
-./msx/Vmsx
-```
+**Note**: These ROMs are copyrighted by their respective manufacturers. Only links are provided. 
 
 ## Technical Details
 
@@ -278,4 +235,5 @@ https://creativecommons.org/licenses/by-nd/4.0/
 ## Contact
 
 For questions, issues, or contributions, please use the GitHub issue tracker.
+
 
