@@ -18,8 +18,10 @@ EAGLE_PDF_DOCKER := docker run --rm -v $(CURDIR):/work -w /work terriblefire78/e
 all: $(GERBERS).zip
 
 # Generate gerbers and PDF
-.PHONY: gerbers
+.PHONY: gerbers camfiles
 gerbers: $(GERBERS).zip
+
+camfiles: $(GERBERS)
 
 .PHONY: pdf
 pdf: $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf
@@ -80,6 +82,7 @@ help:
 	@echo "Targets:"
 	@echo "  all           - Generate Gerbers for main TFMSX board (default)"
 	@echo "  gerbers       - Generate Gerber files and ZIP archive"
+	@echo "  camfiles      - Generate Gerber files only (no ZIP)"
 	@echo "  pdf           - Generate PDF schematic for main board"
 	@echo "  clean         - Remove generated PDF and Gerber files"
 	@echo "  clean-gerbers - Remove Gerber files and directories"
