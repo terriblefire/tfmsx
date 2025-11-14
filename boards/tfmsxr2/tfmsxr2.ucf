@@ -1,0 +1,136 @@
+# Copyright (C) 2016-2017, Stephen J. Leary
+# All rights reserved.
+#
+# This file is part of TF530 (Terrible Fire 030 Accelerator)
+#
+# TF530 is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# TF530 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with TF530. If not, see <http://www.gnu.org/licenses/>.
+
+NET "CLK28M"      LOC="30";
+NET "EXCS1"      LOC="21";
+NET "EXCS2"      LOC="20";
+NET "EXCS12"      LOC="22";
+NET "EXSLTSL1"      LOC="23";
+NET "EXSLTSL2"      LOC="24";
+NET "INT"      LOC="70";
+NET "M1"      LOC="66";
+NET "RESET"      LOC="69";
+NET "RFSH"      LOC="61";
+NET "SCE"      LOC="97";
+NET "SLOT_INT"      LOC="19";
+NET "VDPR"      LOC="14";
+NET "VDPW"      LOC="15";
+NET "VDP_INT"      LOC="16";
+NET "VRESET"      LOC="7";
+NET "A<0>"      LOC="58";
+NET "A<1>"      LOC="57";
+NET "A<2>"      LOC="54";
+NET "A<3>"      LOC="52";
+NET "A<4>"      LOC="50";
+NET "A<5>"      LOC="48";
+NET "A<6>"      LOC="45";
+NET "A<7>"      LOC="43";
+NET "A<8>"      LOC="40";
+NET "A<9>"      LOC="38";
+NET "A<10>"      LOC="34";
+NET "A<11>"      LOC="33";
+NET "A<12>"      LOC="35";
+NET "A<13>"      LOC="39";
+NET "A<14>"      LOC="41";
+NET "A<15>"      LOC="44";
+NET "PORTB<0>"      LOC="136";
+NET "PORTB<1>"      LOC="135";
+NET "PORTB<2>"      LOC="134";
+NET "PORTB<3>"      LOC="133";
+NET "PORTB<4>"      LOC="132";
+NET "PORTB<5>"      LOC="131";
+NET "PORTB<6>"      LOC="130";
+NET "PORTB<7>"      LOC="129";
+NET "ARMINT"      LOC="82";
+NET "BDIR"      LOC="5";
+NET "BUSAK"      LOC="77";
+NET "BUSRQ"      LOC="71";
+
+NET "CLKCPU"      LOC="46";
+NET "D<0>"      LOC="64";
+NET "D<1>"      LOC="68";
+NET "D<2>"      LOC="59";
+NET "D<3>"      LOC="51";
+NET "D<4>"      LOC="49";
+NET "D<5>"      LOC="53";
+NET "D<6>"      LOC="56";
+NET "D<7>"      LOC="60";
+NET "HALT"      LOC="76";
+NET "INTSIG<4>"      LOC="140";
+NET "INTSIG<5>"      LOC="139";
+NET "INTSIG<6>"      LOC="138";
+NET "INTSIG<7>"      LOC="137";
+NET "INTSIG<18>"      LOC="88";
+NET "INTSIG<19>"      LOC="87";
+NET "INTSIG<20>"      LOC="86";
+NET "INTSIG<21>"      LOC="85";
+NET "INTSIG<22>"      LOC="83";
+NET "IORQ"      LOC="80";
+NET "MREQ"      LOC="78";
+NET "PORTC<0>"      LOC="3";
+NET "PORTC<1>"      LOC="2";
+NET "PORTC<2>"      LOC="143";
+NET "PORTC<3>"      LOC="142";
+NET "NMI"      LOC="74";
+NET "PPI_SND"      LOC="9";
+NET "PSGCLK"      LOC="4";
+NET "RAMSLOT<0>"      LOC="115";
+NET "RAMSLOT<1>"      LOC="120";
+NET "RAMSLOT<2>"      LOC="121";
+NET "RAMSLOT<3>"      LOC="124";
+NET "RAMSLOT<4>"      LOC="125";
+NET "RD"      LOC="81";
+NET "ROMA<14>"      LOC="31";
+NET "ROMA<15>"      LOC="28";
+NET "ROMA<16>"      LOC="27";
+NET "ROMA<17>"      LOC="25";
+NET "ROMA<18>"      LOC="32";
+NET "ROMOE"      LOC="26";
+NET "ROMSEL<0>"      LOC="128";
+NET "ROMSEL<1>"      LOC="126";
+NET "SA<0>"      LOC="92";
+NET "SA<1>"      LOC="93";
+NET "SA<2>"      LOC="94";
+NET "SA<3>"      LOC="95";
+NET "SA<4>"      LOC="96";
+NET "SA<5>"      LOC="103";
+NET "SA<6>"      LOC="104";
+NET "SA<7>"      LOC="105";
+NET "SA<8>"      LOC="106";
+NET "SA<9>"      LOC="107";
+NET "SA<10>"      LOC="110";
+NET "SA<11>"      LOC="111";
+NET "SA<12>"      LOC="112";
+NET "SA<13>"      LOC="113";
+NET "SD<0>"      LOC="98";
+NET "SD<1>"      LOC="100";
+NET "SD<2>"      LOC="101";
+NET "SD<3>"      LOC="102";
+NET "SD<4>"      LOC="116";
+NET "SD<5>"      LOC="117";
+NET "SD<6>"      LOC="118";
+NET "SD<7>"      LOC="119";
+NET "SLOTCLK"      LOC="17";
+NET "SWR"      LOC="91";
+NET "VDP_SEL"      LOC="6";
+NET "WAIT"      LOC="75";
+NET "WR"      LOC="79";
+NET "YMBC<1>"      LOC="13";
+NET "YMBC<2>"      LOC="12";
+NET "YMBDIR"      LOC="11";
+NET "YMSEL"      LOC="10";

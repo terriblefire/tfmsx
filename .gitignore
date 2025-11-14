@@ -1,0 +1,124 @@
+# Verilog Simulation
+*.vcd
+*.tb
+*.lxt
+*.lx2
+*.vvp
+
+# Xilinx ISE Build Outputs
+*.jed
+*.svf
+*.vm6
+*.rpt
+*.bld
+*.ngc
+*.ngd
+*.ngo
+*.nga
+*.pad
+*.par
+*.pcf
+*.prj
+*.ptwx
+*.stx
+*.syr
+*.twr
+*.twx
+*.unroutes
+*.xpi
+*.xml
+*_build.log
+*.log
+*.cmd_log
+*_summary.xml
+*_usage.xml
+
+# Xilinx Intermediate Files
+_xmsgs/
+xlnx_auto_0_xdb/
+xst/
+*.xst
+*.lso
+*.bgn
+*.drc
+*.gyd
+*.mfd
+*.pnx
+*.tim
+*.vhd~
+*.ise_ISE_Backup
+_ngo/
+_xmsgs/
+
+# CPLD Fit Reports
+*.xml
+*.html
+*.htm
+
+# Verilator
+obj_dir/
+*.vpp
+*.tree
+*.dot
+
+# Icarus Verilog
+a.out
+verilog.log
+*.out
+
+# Modelsim
+work/
+*.wlf
+*.vstf
+*.ucdb
+transcript
+vsim.wlf
+
+# Eagle CAD
+*.b#*
+*.s#*
+*.l#*
+*.gpi
+*.dri
+*.drc
+*.erc
+*.pro
+*.job
+*.$$*
+*.$$$
+
+# Eagle CAM Outputs (uncomment if you don't want to track gerbers)
+# *.GBL
+# *.GBO
+# *.GBP
+# *.GBS
+# *.GTL
+# *.GTO
+# *.GTP
+# *.GTS
+# *.TXT
+# *.drl
+# *.gpi
+# *.gml
+# *.sol
+# *.pls
+# *.stc
+# *.sts
+# *.crc
+# *.crs
+
+# General
+*~
+*.swp
+*.swo
+.DS_Store
+*.orig
+*.bak
+*.tmp
+
+# ROM files (optional - uncomment if you don't want to track ROMs)
+# *.rom
+# *.ROM
+# *.mif
+# *.hex
+# *.bin

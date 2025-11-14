@@ -1,0 +1,100 @@
+# Makefile for Eagle CAM output (Gerber generation)
+# Uses terriblefire78/eagle:v1 Docker container for CAM output
+
+# Primary board (built by default)
+BOARDPREFIX := tfmsx
+BOARD := $(BOARDPREFIX).brd
+CAMFILE := jlcpcb_4_layer_v9.cam
+GITVERSION := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+DATESTRING := $(shell date +"%Y_%m_%d")
+GERBERS := $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING)
+
+# Docker containers
+EAGLE_DOCKER := docker run --rm -v $(CURDIR):/work -w /work terriblefire78/eagle:v1 eagle
+EAGLE_PDF_DOCKER := docker run --rm -v $(CURDIR):/work -w /work terriblefire78/eagle-pdf python /app/generate_schematic_pdf.py
+
+# Default target - only build main board
+.PHONY: all
+all: $(GERBERS).zip
+
+# Generate gerbers and PDF
+.PHONY: gerbers
+gerbers: $(GERBERS).zip
+
+.PHONY: pdf
+pdf: $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf
+
+# Main board gerber generation
+$(GERBERS).zip: $(GERBERS)
+	@echo "Creating Gerber archive..."
+	zip -r $@ $(GERBERS)/* $(GERBERS)/*/* 2>/dev/null || zip -r $@ $(GERBERS)/*
+	@echo "Gerber archive created: $@"
+
+$(GERBERS): $(BOARD) $(CAMFILE)
+	@echo "Generating Gerbers for $(BOARD) using $(CAMFILE)..."
+	mkdir -p $(GERBERS)
+	$(EAGLE_DOCKER) -X -dCAMJOB -j$(CAMFILE) -o$(GERBERS) $(BOARD)
+	@echo "Gerbers generated in $(GERBERS)/"
+
+# PDF schematic generation
+$(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf: $(BOARDPREFIX).sch
+	@echo "Generating PDF schematic from $<..."
+	$(EAGLE_PDF_DOCKER) $< $@
+	@echo "PDF schematic generated: $@"
+
+# Clean targets
+.PHONY: clean
+clean: clean-gerbers clean-pdf
+	@echo "Cleaned generated files"
+
+.PHONY: clean-pdf
+clean-pdf:
+	rm -f *_*_*.pdf
+	@echo "Cleaned PDF files"
+
+.PHONY: clean-gerbers
+clean-gerbers:
+	-sudo rm -rf *_*_*/ 2>/dev/null || rm -rf *_*_*/ 2>/dev/null || true
+	rm -f *_*_*.zip
+	@echo "Cleaned Gerber files and directories"
+
+# Clean everything
+.PHONY: distclean
+distclean: clean
+	@echo "Cleaned all generated files"
+
+# List available boards
+.PHONY: list
+list:
+	@echo "Available boards:"
+	@for board in $(BOARDS); do \
+		if [ -f $$board.brd ]; then \
+			echo "  $$board (board: $$board.brd, schematic: $$board.sch)"; \
+		fi; \
+	done
+
+# Show help
+.PHONY: help
+help:
+	@echo "Eagle CAM Output Makefile for TFMSX"
+	@echo ""
+	@echo "Default builds:"
+	@echo "  $(BOARD) - Main TFMSX board"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all           - Generate Gerbers for main TFMSX board (default)"
+	@echo "  gerbers       - Generate Gerber files and ZIP archive"
+	@echo "  pdf           - Generate PDF schematic for main board"
+	@echo "  clean         - Remove generated PDF and Gerber files"
+	@echo "  clean-gerbers - Remove Gerber files and directories"
+	@echo "  clean-pdf     - Remove PDF files"
+	@echo "  distclean     - Remove all generated files"
+	@echo "  help          - Show this help message"
+	@echo ""
+	@echo "Docker containers used:"
+	@echo "  terriblefire78/eagle:v1      - For Gerber generation"
+	@echo "  terriblefire78/eagle-pdf     - For PDF schematic generation"
+	@echo ""
+	@echo "Output files:"
+	@echo "  Gerbers: $(GERBERS).zip"
+	@echo "  PDF:     $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf"
