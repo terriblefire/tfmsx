@@ -19,7 +19,7 @@ all: $(GERBERS).zip
 
 # Generate gerbers and PDF
 .PHONY: gerbers
-gerbers: $(GERBERS).zip
+camfiles: $(GERBERS).zip
 
 .PHONY: pdf
 pdf: $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf
