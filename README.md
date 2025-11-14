@@ -194,14 +194,18 @@ The TFMSX board supports both V9938 and V9958 video display processors. The VDP 
 
 ### Jumper Settings
 
-| VDP Chip | JP3 Position | JP4 Position |
-|----------|--------------|--------------|
-| **V9938** | **Closed (Left)** | **Closed (Left)** |
-| **V9958** | **Open (Right)** | **Open (Right)** |
+| VDP Chip | JP3 (Single Position) | JP4 (Two Position) |
+|----------|----------------------|-------------------|
+| **V9938** | **Closed** | **Left Position** |
+| **V9958** | **Open** | **Right Position** |
 
-**Important**: Both jumpers must be set to the same position:
-- **V9938**: Both JP3 and JP4 closed (left position)
-- **V9958**: Both JP3 and JP4 open (right position)
+**Jumper Types**:
+- **JP3**: Single position jumper - either closed (jumper installed) or open (no jumper)
+- **JP4**: Two position jumper - set to either left or right position
+
+**Configuration Summary**:
+- **V9938**: JP3 closed, JP4 left position
+- **V9958**: JP3 open, JP4 right position
 
 The CPLD logic uses these jumper settings to configure timing and control signals appropriately for the installed VDP chip.
 
