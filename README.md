@@ -188,6 +188,23 @@ Utilization varies by revision but typically uses 70-85% of available macrocells
 4. **Flash Hardware**: `make flash` (if hardware available)
 5. **Test on Hardware**: Verify functionality on physical board
 
+## VDP Configuration
+
+The TFMSX board supports both V9938 and V9958 video display processors. The VDP chip type is selected using jumpers JP3 and JP4. The CPLD automatically handles all other configuration differences.
+
+### Jumper Settings
+
+| VDP Chip | JP3 Position | JP4 Position |
+|----------|--------------|--------------|
+| **V9938** | **Closed (Left)** | **Closed (Left)** |
+| **V9958** | **Open (Right)** | **Open (Right)** |
+
+**Important**: Both jumpers must be set to the same position:
+- **V9938**: Both JP3 and JP4 closed (left position)
+- **V9958**: Both JP3 and JP4 open (right position)
+
+The CPLD logic uses these jumper settings to configure timing and control signals appropriately for the installed VDP chip.
+
 ## Hardware Design Files
 
 Eagle CAD schematics and board layouts are in `eagle/`:
@@ -196,7 +213,19 @@ Eagle CAD schematics and board layouts are in `eagle/`:
 - **JAMMA Adapter**: `tfmsx_jamma.sch` / `tfmsx_jamma.brd`
 - **Previous Revisions**: `tfmsx_rev0.*`, `tfmsx_rev1.*`
 
-Gerber files for PCB fabrication are generated in `eagle/CAMOutputs/`.
+### Generating Gerber Files
+
+The `eagle/` directory includes a Makefile for automated Gerber generation using Docker (no Eagle installation required).
+
+```bash
+cd eagle
+make               # Generate Gerbers for main TFMSX board
+make pdf           # Generate PDF schematic for main board
+```
+
+Output files are named with git commit hash and date (e.g., `tfmsx_a1b2c3d_2025_11_14.zip`).
+
+**Requirements**: Docker with `terriblefire78/eagle:v1` and `terriblefire78/eagle-pdf` images.
 
 ## Contributing
 

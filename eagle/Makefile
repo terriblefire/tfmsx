@@ -19,7 +19,7 @@ all: $(GERBERS).zip
 
 # Generate gerbers and PDF
 .PHONY: gerbers
-camfiles: $(GERBERS).zip
+gerbers: $(GERBERS).zip
 
 .PHONY: pdf
 pdf: $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf
@@ -63,15 +63,11 @@ clean-gerbers:
 distclean: clean
 	@echo "Cleaned all generated files"
 
-# List available boards
+# List available board
 .PHONY: list
 list:
-	@echo "Available boards:"
-	@for board in $(BOARDS); do \
-		if [ -f $$board.brd ]; then \
-			echo "  $$board (board: $$board.brd, schematic: $$board.sch)"; \
-		fi; \
-	done
+	@echo "Available board:"
+	@echo "  $(BOARDPREFIX) (board: $(BOARD), schematic: $(BOARDPREFIX).sch)"
 
 # Show help
 .PHONY: help
