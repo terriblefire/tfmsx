@@ -41,7 +41,6 @@ tfmsx/
 ├── rtl/                    # Verilog RTL source code
 │   ├── tfmsx_top.v        # Top-level CPLD module
 │   ├── clocks.v           # Clock generation (CPU, PSG, slot clocks)
-│   ├── mapper.v           # Cartridge slot memory mapper
 │   └── rp5c01a.v          # Real-time clock module
 ├── boards/                 # Board-specific build configurations
 │   ├── tfmsxr2/           # Revision 2 board (current)
@@ -57,15 +56,8 @@ tfmsx/
 │   └── Makefile.inc       # Test environment setup (Docker/iverilog)
 ├── eagle/                 # Eagle CAD hardware designs
 │   ├── tfmsx.brd/sch      # Main board (latest revision)
-│   ├── tfmsx_rev*.brd/sch # Previous revisions
-│   ├── tfmsx_jamma.*      # JAMMA adapter board
-│   └── CAMOutputs/        # Generated gerber files
 ├── roms/                  # MSX system ROM tools
 │   └── makedefaultroms.sh # Script to download MSX2 BIOS ROMs
-├── ucf/                   # Pin constraint files (.ucf, .net)
-├── LICENSE                # CC-BY-ND 4.0 license
-├── README.md              # This file
-└── CLAUDE.md              # AI assistant guidance
 ```
 
 ## Building the CPLD Firmware
@@ -286,3 +278,4 @@ https://creativecommons.org/licenses/by-nd/4.0/
 ## Contact
 
 For questions, issues, or contributions, please use the GitHub issue tracker.
+
