@@ -87,9 +87,9 @@ jobs:
         cp eagle/tfmsx_cpl.csv release/${PACKAGE_NAME}/assembly/
 
         # Create README for the release
-        cat > release/${PACKAGE_NAME}/README.txt <<EOF
-TFMSX Release ${VERSION}
-========================
+        cat > release/${PACKAGE_NAME}/README.txt <<'EOF'
+TFMSX Release
+=============
 
 This package contains all files needed to manufacture and program the TFMSX board.
 
