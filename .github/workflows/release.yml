@@ -45,7 +45,9 @@ jobs:
     - name: Generate Gerbers
       run: |
         cd eagle
-        docker run --rm -v $(pwd):/work -w /work terriblefire78/eagle:v1 eagle -X -dCAMJOB -jjlcpcb_4_layer_v9.cam -otfmsx_${{ steps.version.outputs.gitversion }}_${{ steps.version.outputs.datestring }} tfmsx.brd
+        GERBER_DIR="tfmsx_${{ steps.version.outputs.gitversion }}_${{ steps.version.outputs.datestring }}"
+        mkdir -p ${GERBER_DIR}
+        docker run --rm -v $(pwd):/work -w /work terriblefire78/eagle:v1 eagle -X -dCAMJOB -jjlcpcb_4_layer_v9.cam -o${GERBER_DIR} tfmsx.brd
 
     - name: Create Gerber ZIP
       run: |
