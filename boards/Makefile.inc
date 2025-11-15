@@ -11,5 +11,5 @@ ifneq ($(UNAME), Linux)
       	    $(shell docker build .. -t xilinx --platform linux/amd64)
       endif
       
-      XILINXENV=docker run --rm  -v $(SRCROOT):/host -w /host/$(BRDROOT) -it $(DOCKERIMAGE) 
+      XILINXENV=docker run --rm --platform linux/amd64 -v $(SRCROOT):/host -w /host/$(BRDROOT) $(DOCKERIMAGE) 
 endif

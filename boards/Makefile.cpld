@@ -52,8 +52,11 @@ CPLDFITFLAGS=-slew slow -power std -terminate float -unused float -optimize $(OP
 
 .PHONY: all clean
 
+GITVERSION:=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+JEDFILE=$(PN)_$(GITVERSION).jed
+
 all: $(PB).tim $(OUTPUT)
-	cp $(PB).jed $(PN).jed
+	cp $(PB).jed $(JEDFILE)
 $(WD):
 	mkdir $(WD)/
 
