@@ -1,0 +1,80 @@
+
+
+reg [15:0] 	CPU_A = 0;
+reg [7:0] 	CPU_DOUT = 0;
+reg 		CPU_RD = 1;
+reg 		CPU_WR = 1;
+reg 		CPU_MREQ = 1;
+reg 		CPU_IORQ = 1;
+reg 		CPU_RFSH = 1;
+
+reg         CPU_DOUT_EN = 1;
+
+wire [7:0] CPU_D = CPU_DOUT_EN ? CPU_DOUT : 8'bzzzzzzzz;
+
+wire RESET;
+wire WAIT;
+
+wire RFSH;
+wire [7:0]  SD;
+wire [13:0] SA;
+wire [4:0]  RAMSLOT;
+wire [2:1]  YMBC;
+wire        YMBDIR;
+wire [4:0]  ROMA;
+wire        ROMOE;
+wire        SCE;
+wire        SWR;
+wire        VDPW;
+wire        VDPR;
+wire        BUSRQ;
+wire        INT;
+wire        M1 = 1'b1;
+wire        VDP_INT = 1'b0;
+wire        EXSLTSL1;
+wire        EXSLTSL2;
+
+tfmsx_top  TFMSX (
+
+    .CLK28M ( CLK28M ), 
+    .RESET  ( RESET  ),
+    .CLKCPU ( CLKCPU ),
+    .PSGCLK ( PSGCLK ),
+    .WAIT   ( WAIT   ),
+    .D      ( CPU_D  ),
+    .A      ( CPU_A  ),
+
+    .MREQ   ( CPU_MREQ   ),
+    .IORQ   ( CPU_IORQ   ),
+    .RFSH   ( CPU_RFSH   ),
+    .RD     ( CPU_RD     ),
+    .WR     ( CPU_WR     ),
+
+    .BUSRQ  ( BUSRQ  ),
+
+    .INT    ( INT    ),
+    .M1     ( M1     ),
+
+    .ROMOE  ( ROMOE  ),
+    .ROMA   ( ROMA   ),
+
+    .SA     ( SA     ),
+    .SD     ( SD     ),
+    .SCE    ( SCE    ),
+    .SWR    ( SWR    ),
+    .RAMSLOT( RAMSLOT ),
+    
+    .VDP_INT  (~VDP_INT),
+    .VDPW   ( VDPW   ),
+    .VDPR   ( VDPR   ),
+
+    .YMBC   ( YMBC   ),
+    .YMBDIR ( YMBDIR ),
+
+    .EXSLTSL1 ( EXSLTSL1 ),
+    .EXSLTSL2 ( EXSLTSL2 )
+
+);
+
+
+
