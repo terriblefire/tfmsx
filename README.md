@@ -57,7 +57,8 @@ tfmsx/
 ├── eagle/                 # Eagle CAD hardware designs
 │   ├── tfmsx.brd/sch      # Main board (latest revision)
 ├── roms/                  # MSX system ROM tools
-│   └── makedefaultroms.sh # Script to download MSX2 BIOS ROMs
+│   ├── Makefile           # Automated ROM download and assembly
+│   └── makedefaultroms.sh # Legacy script (deprecated)
 ```
 
 ## Building the CPLD Firmware
@@ -120,16 +121,18 @@ This requires:
 
 ## MSX System ROMs
 
-The `roms/` directory contains a script to download and prepare MSX2 system ROMs for use with the TFMSX hardware.
+The `roms/` directory contains a Makefile to download and prepare MSX2 system ROMs for use with the TFMSX hardware.
 
-### Downloading System ROMs
+### Building System ROMs
 
 ```bash
 cd roms
-./makedefaultroms.sh
+make           # Download ROMs and create default.rom
+make -j8       # Parallel download (faster)
+make clean     # Remove all generated files
 ```
 
-This script downloads MSX2 BIOS ROMs from the BlueMSX emulator repository and creates a combined ROM image with multiple banks:
+The Makefile automatically downloads MSX2 BIOS ROMs from the BlueMSX emulator repository and creates a combined ROM image with multiple banks:
 
 - **Bank 0**: MSX2 (Standard) + MSX2EXT + DISK ROM
 - **Bank 1**: MSX2BR (Brazilian) + MSX2BREXT + DISK ROM
@@ -137,6 +140,12 @@ This script downloads MSX2 BIOS ROMs from the BlueMSX emulator repository and cr
 - **Bank 3**: MSX2SP (Spanish MSX2+) + MSX2SPEXT + DISK ROM
 
 The final output is `default.rom`, which contains all four banks concatenated together. This allows the TFMSX hardware to support multiple MSX2 configurations by bank switching.
+
+**Features**:
+- Dependency tracking: Only downloads missing files
+- Incremental builds: Only rebuilds changed targets
+- Parallel downloads: Use `-j` flag for faster downloads
+- Clean target: Easy cleanup with `make clean`
 
 **Note**: These ROMs are copyrighted by their respective manufacturers. Only links are provided. 
 
