@@ -1,9 +1,14 @@
+# claude
+claude.md
+.claude
+
 # Verilog Simulation
 *.vcd
 *.tb
 *.lxt
 *.lx2
 *.vvp
+*.csv
 
 # Xilinx ISE Build Outputs
 *.jed
