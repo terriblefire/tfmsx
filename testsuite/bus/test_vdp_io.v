@@ -12,7 +12,7 @@ initial begin
     $dumpfile("test_vdp_io.vcd");
     $dumpvars(0, test_vdp_io);
 
-    #100;
+    #500;
     wait(RESET);
 
     // VDP ports are at 0x98-0x9B
@@ -28,7 +28,7 @@ initial begin
     assert(1'b0, VDPW);
     assert(1'b1, VDPR);  // Read should be inactive
     endcycle();
-    #100;
+    #500;
 
     // Test 2: Write to VDP register port (0x99)
     beginiow(8'h99, 8'h12);
@@ -36,7 +36,7 @@ initial begin
     assert(1'b0, VDPW);
     assert(1'b1, VDPR);
     endcycle();
-    #100;
+    #500;
 
     // Test 3: Read from VDP data port (0x98)
     beginior(8'h98);
@@ -45,7 +45,7 @@ initial begin
     assert(1'b0, VDPR);
     assert(1'b1, VDPW);  // Write should be inactive
     endcycle();
-    #100;
+    #500;
 
     // Test 4: Read from VDP status register (0x99)
     beginior(8'h99);
@@ -53,7 +53,7 @@ initial begin
     assert(1'b0, VDPR);
     assert(1'b1, VDPW);
     endcycle();
-    #100;
+    #500;
 
     // Test 5: Write to palette register (0x9A)
     beginiow(8'h9A, 8'h77);
@@ -61,7 +61,7 @@ initial begin
     assert(1'b0, VDPW);
     assert(1'b1, VDPR);
     endcycle();
-    #100;
+    #500;
 
     // Test 6: Write to indirect register (0x9B)
     beginiow(8'h9B, 8'h88);
@@ -69,35 +69,35 @@ initial begin
     assert(1'b0, VDPW);
     assert(1'b1, VDPR);
     endcycle();
-    #100;
+    #500;
 
     // Test 7: Inactive state - no I/O access
-    #100;
+    #500;
     assert(1'b1, VDPW);  // Both should be inactive (high)
     assert(1'b1, VDPR);
-    #100;
+    #500;
 
     // Test 8: Sequential VDP writes
     beginiow(8'h98, 8'h00);
     endcycle();
-    #50;
+    #500;
     beginiow(8'h98, 8'h01);
     endcycle();
-    #50;
+    #500;
     beginiow(8'h98, 8'h02);
     endcycle();
-    #100;
+    #500;
 
     // Test 9: Sequential VDP reads
     beginior(8'h98);
     endcycle();
-    #50;
+    #500;
     beginior(8'h98);
     endcycle();
-    #50;
+    #500;
     beginior(8'h98);
     endcycle();
-    #100;
+    #500;
 
     $display("All VDP I/O tests passed!");
     $finish();

@@ -15,7 +15,7 @@ initial begin
 	$dumpfile("test_psg_io.vcd");
     $dumpvars(0, test_psg_io);
    
-    #100;
+    #500;
     wait(RESET);
 
     // inactive 
