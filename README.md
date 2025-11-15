@@ -1,6 +1,7 @@
 # TFMSX
 
 [![Run Tests](https://github.com/terriblefire/tfmsx/actions/workflows/run-tests.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/run-tests.yml)
+[![Build CPLD Firmware](https://github.com/terriblefire/tfmsx/actions/workflows/build-firmware.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/build-firmware.yml)
 [![Generate Gerbers](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml)
 [![Generate Schematic PDF](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml)
 [![Generate Assembly Files](https://github.com/terriblefire/tfmsx/actions/workflows/generate_assembly.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/generate_assembly.yml)

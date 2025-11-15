@@ -1,0 +1,57 @@
+name: Build CPLD Firmware
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'rtl/**'
+      - 'boards/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'rtl/**'
+      - 'boards/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Need full history for git version info
+
+    - name: Build CPLD firmware
+      run: |
+        cd boards
+        docker run --rm -v $PWD/..:/host -w /host/boards terriblefire78/xilinx make zip
+
+    - name: Get release package name
+      id: get-package
+      run: |
+        cd boards
+        PACKAGE=$(ls tfmsx_*.zip 2>/dev/null | head -1)
+        echo "package=$PACKAGE" >> $GITHUB_OUTPUT
+        echo "Found package: $PACKAGE"
+
+    - name: Upload firmware as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: cpld-firmware
+        path: boards/${{ steps.get-package.outputs.package }}
+        retention-days: 90
+
+    - name: Upload individual JED files
+      uses: actions/upload-artifact@v4
+      with:
+        name: jed-files
+        path: boards/tfmsxr2/*.jed
+        retention-days: 90
+
+    - name: Display build info
+      run: |
+        echo "CPLD firmware build completed"
+        ls -lh boards/*.zip 2>/dev/null || echo "No ZIP found"
+        ls -lh boards/tfmsxr2/*.jed 2>/dev/null || echo "No JED found"
