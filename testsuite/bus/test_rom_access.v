@@ -4,6 +4,7 @@ module test_rom_access;
 
 `include "../clocks.vinc"
 `include "bus_fixture.vinc"
+`include "bus_tasks.vinc"
 `include "../unittest.vinc"
 
 // ROM simulation - 256KB (bank selected via ROMA[18:14])
@@ -13,38 +14,6 @@ reg [7:0] rom [0:262143];
 // ROM is active when ROMOE is low
 wire [7:0] rom_dout = (!ROMOE) ? rom[{ROMA, CPU_A[13:0]}] : 8'hzz;
 assign CPU_D = (!ROMOE && !CPU_RD && !CPU_MREQ) ? rom_dout : 8'hzz;
-
-task beginmemr;
-input [15:0] addr;
-begin
-    CPU_A = addr;
-    CPU_DOUT_EN = 1'b0;
-
-    @(posedge CLKCPU);
-    #1;
-    @(negedge CLKCPU);
-    #1;
-
-    CPU_MREQ = 1'b0;
-    CPU_RD   = 1'b0;
-end
-endtask
-
-task endcycle;
-begin
-    @(posedge CLKCPU);
-    #1;
-    @(negedge CLKCPU);
-    #1;
-    CPU_DOUT_EN = 1'b0;
-    CPU_IORQ = 1'b1;
-    CPU_MREQ = 1'b1;
-    CPU_RFSH = 1'b1;
-    CPU_RD   = 1'b1;
-    CPU_WR   = 1'b1;
-    #1;
-end
-endtask
 
 integer i;
 

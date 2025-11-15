@@ -4,6 +4,7 @@ module test_sram_access;
 
 `include "../clocks.vinc"
 `include "bus_fixture.vinc"
+`include "bus_tasks.vinc"
 `include "../unittest.vinc"
 
 // SRAM simulation
@@ -19,74 +20,6 @@ always @(*) begin
         sram[SA] <= SD;
     end
 end
-
-task beginiow;
-input [7:0] addr;
-input [7:0] data;
-begin
-    CPU_A = {data, addr};
-    CPU_DOUT = data;
-    CPU_DOUT_EN = 1'b1;
-
-    @(posedge CLKCPU);
-    #1;
-    @(negedge CLKCPU);
-    #1;
-
-    CPU_IORQ = 1'b0;
-    CPU_WR   = 1'b0;
-end
-endtask
-
-task beginmemw;
-input [15:0] addr;
-input [7:0] data;
-begin
-    CPU_A = addr;
-    CPU_DOUT = data;
-    CPU_DOUT_EN = 1'b1;
-
-    @(posedge CLKCPU);
-    #1;
-    @(negedge CLKCPU);
-    #1;
-
-    CPU_MREQ = 1'b0;
-    CPU_WR   = 1'b0;
-end
-endtask
-
-task beginmemr;
-input [15:0] addr;
-begin
-    CPU_A = addr;
-    CPU_DOUT_EN = 1'b0;
-
-    @(posedge CLKCPU);
-    #1;
-    @(negedge CLKCPU);
-    #1;
-
-    CPU_MREQ = 1'b0;
-    CPU_RD   = 1'b0;
-end
-endtask
-
-task endcycle;
-begin
-    @(posedge CLKCPU);
-    #1;
-    @(negedge CLKCPU);
-    #1;
-    CPU_DOUT_EN = 1'b0;
-    CPU_IORQ = 1'b1;
-    CPU_MREQ = 1'b1;
-    CPU_RFSH = 1'b1;
-    CPU_RD   = 1'b1;
-    CPU_WR   = 1'b1;
-    #1;
-end
-endtask
 
 integer i;
 

@@ -1,0 +1,84 @@
+// Common bus cycle tasks for Z80 bus simulation
+
+// Wait for clock edge with small delay for signal propagation
+`define WAIT_CLKCPU_POSEDGE @(posedge CLKCPU); #1;
+`define WAIT_CLKCPU_NEGEDGE @(negedge CLKCPU); #1;
+
+// I/O Write cycle
+task beginiow;
+input [7:0] addr;
+input [7:0] data;
+begin
+    CPU_A = {data, addr};
+    CPU_DOUT = data;
+    CPU_DOUT_EN = 1'b1;
+
+    `WAIT_CLKCPU_POSEDGE
+    `WAIT_CLKCPU_NEGEDGE
+
+    CPU_IORQ = 1'b0;
+    CPU_WR   = 1'b0;
+end
+endtask
+
+// I/O Read cycle
+task beginior;
+input [7:0] addr;
+begin
+    CPU_A = {addr, addr};
+    CPU_DOUT_EN = 1'b0;
+
+    `WAIT_CLKCPU_POSEDGE
+    `WAIT_CLKCPU_NEGEDGE
+
+    CPU_IORQ = 1'b0;
+    CPU_RD   = 1'b0;
+end
+endtask
+
+// Memory Write cycle
+task beginmemw;
+input [15:0] addr;
+input [7:0] data;
+begin
+    CPU_A = addr;
+    CPU_DOUT = data;
+    CPU_DOUT_EN = 1'b1;
+
+    `WAIT_CLKCPU_POSEDGE
+    `WAIT_CLKCPU_NEGEDGE
+
+    CPU_MREQ = 1'b0;
+    CPU_WR   = 1'b0;
+end
+endtask
+
+// Memory Read cycle
+task beginmemr;
+input [15:0] addr;
+begin
+    CPU_A = addr;
+    CPU_DOUT_EN = 1'b0;
+
+    `WAIT_CLKCPU_POSEDGE
+    `WAIT_CLKCPU_NEGEDGE
+
+    CPU_MREQ = 1'b0;
+    CPU_RD   = 1'b0;
+end
+endtask
+
+// End bus cycle - return all signals to idle
+task endcycle;
+begin
+    `WAIT_CLKCPU_POSEDGE
+    `WAIT_CLKCPU_NEGEDGE
+    CPU_DOUT_EN = 1'b0;
+    CPU_IORQ = 1'b1;
+    CPU_MREQ = 1'b1;
+    CPU_RFSH = 1'b1;
+    CPU_RD   = 1'b1;
+    CPU_WR   = 1'b1;
+    #1;
+end
+endtask
