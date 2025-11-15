@@ -9,6 +9,9 @@ on:
       - 'eagle/extract_cpl.py'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   generate-assembly:
     runs-on: ubuntu-latest
