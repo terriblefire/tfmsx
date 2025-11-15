@@ -6,16 +6,32 @@ It is written for beginners and assumes **no prior PCB ordering experience**.
 
 ---
 
-## 📁 1. Download the Required Files
+## 📁 1. Download and Extract the Release Package
 
 1. Go to the GitHub repository: <https://github.com/terriblefire/tfmsx>
-2. Click the **Releases** section (on the right side or top bar).
-3. Download the following files from the latest release:
-   - **Gerber ZIP file** (manufacturing files for the PCB)
-   - **BOM file** (Bill of Materials)
-   - **CPL / Pick‑and‑Place file** (for assembly)
+2. Open the **Releases** section.
+3. Download the **single release ZIP file** (e.g., `tfmsx_v2.0.0.zip`).
+4. Extract the ZIP. You will see a structure like this:
 
-> Make sure you download the files from the **release**, not from the source tree.
+```
+assembly/
+    tfmsx_bom.csv
+    tfmsx_cpl.csv
+
+pcb/
+    tfmsx_XXXX.zip   (Gerber manufacturing file)
+
+firmware/
+    *.jed files
+
+docs/
+    PDF documentation
+```
+
+The files needed for JLCPCB are:
+- **Gerber ZIP file:** located in the `pcb/` folder
+- **BOM file:** `assembly/tfmsx_bom.csv`
+- **CPL file:** `assembly/tfmsx_cpl.csv`
 
 ---
 
