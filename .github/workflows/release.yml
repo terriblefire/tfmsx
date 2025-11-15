@@ -87,28 +87,28 @@ jobs:
         cp eagle/tfmsx_cpl.csv release/${PACKAGE_NAME}/assembly/
 
         # Create README for the release
-        cat > release/${PACKAGE_NAME}/README.txt <<'EOF'
-TFMSX Release
-=============
-
-This package contains all files needed to manufacture and program the TFMSX board.
-
-Contents:
----------
-firmware/       - CPLD programming files (.jed)
-pcb/            - Gerber files for PCB manufacturing
-assembly/       - BOM and CPL files for PCB assembly
-docs/           - Schematic PDF
-
-Manufacturing:
---------------
-1. Use the Gerber ZIP in pcb/ to order PCBs from your preferred manufacturer
-2. Use the BOM (Bill of Materials) and CPL (Component Placement List) in assembly/
-   for PCB assembly services like JLCPCB
-3. Program the CPLD using the JED file in firmware/
-
-For more information, visit: https://github.com/terriblefire/tfmsx
-EOF
+        {
+          echo "TFMSX Release"
+          echo "============="
+          echo ""
+          echo "This package contains all files needed to manufacture and program the TFMSX board."
+          echo ""
+          echo "Contents:"
+          echo "---------"
+          echo "firmware/       - CPLD programming files (.jed)"
+          echo "pcb/            - Gerber files for PCB manufacturing"
+          echo "assembly/       - BOM and CPL files for PCB assembly"
+          echo "docs/           - Schematic PDF"
+          echo ""
+          echo "Manufacturing:"
+          echo "--------------"
+          echo "1. Use the Gerber ZIP in pcb/ to order PCBs from your preferred manufacturer"
+          echo "2. Use the BOM (Bill of Materials) and CPL (Component Placement List) in assembly/"
+          echo "   for PCB assembly services like JLCPCB"
+          echo "3. Program the CPLD using the JED file in firmware/"
+          echo ""
+          echo "For more information, visit: https://github.com/terriblefire/tfmsx"
+        } > release/${PACKAGE_NAME}/README.txt
 
         # Create release ZIP
         cd release
