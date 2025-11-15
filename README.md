@@ -1,5 +1,6 @@
 # TFMSX
 
+[![Run Tests](https://github.com/terriblefire/tfmsx/actions/workflows/run-tests.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/run-tests.yml)
 [![Generate Gerbers](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml)
 [![Generate Schematic PDF](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml)
 [![Generate BOM](https://github.com/terriblefire/tfmsx/actions/workflows/generate_bom.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/generate_bom.yml)
@@ -193,10 +194,44 @@ Each page can be mapped to any of 4 slots via the slot register (I/O port 0xA8).
 
 Utilization varies by revision but typically uses 70-85% of available macrocells.
 
+## Testing
+
+The `testsuite/` directory contains Verilog testbenches for verifying CPLD functionality. Tests use Icarus Verilog for simulation.
+
+### Running Tests
+
+```bash
+cd testsuite/bus
+make              # Run all tests
+make clean        # Clean generated files
+```
+
+### Test Coverage
+
+The test suite includes comprehensive coverage of bus operations:
+
+- **test_sram_access.v**: SRAM read/write operations, chip select timing, mapper control
+- **test_rom_access.v**: ROM output enable, address decoding, data bus behavior
+- **test_vdp_io.v**: VDP I/O ports (0x98-0x9B), read/write signals, timing
+- **test_psg_io.v**: PSG I/O ports (0xA0-0xA2), control signals
+- **test_slot_access.v**: MSX slot system, memory mapping, slot registers (0xA8, 0xFC-0xFF)
+
+Each test verifies:
+- Correct signal timing and activation
+- Proper address decoding
+- Bus protocol compliance
+- Memory/peripheral access patterns
+
+Tests automatically generate waveform files (`.vcd`) for debugging.
+
+### Continuous Integration
+
+All tests run automatically on push via GitHub Actions. Test status is visible in the badge at the top of this README.
+
 ## Development Workflow
 
 1. **Modify RTL**: Edit Verilog files in `rtl/`
-2. **Run Tests**: `cd testsuite && make` to verify changes
+2. **Run Tests**: `cd testsuite/bus && make` to verify changes (see [Testing](#testing) section)
 3. **Build CPLD**: `cd boards/tfmsxr2 && make`
 4. **Flash Hardware**: `make flash` (if hardware available)
 5. **Test on Hardware**: Verify functionality on physical board
@@ -269,10 +304,12 @@ The BOM groups identical components together for easy ordering and assembly.
 This is an open hardware project. Contributions welcome for:
 
 - RTL improvements and optimizations
-- Additional test coverage
+- Additional test coverage (please include tests for new features)
 - Hardware revision suggestions
 - Documentation enhancements
 - Bug fixes
+
+When contributing RTL changes, please ensure all tests pass by running `cd testsuite/bus && make`.
 
 ## License
 
