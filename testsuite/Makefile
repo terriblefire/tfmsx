@@ -1,4 +1,4 @@
-SUBDIRS:=sdram
+SUBDIRS:=bus
 all: $(SUBDIRS)
 $(SUBDIRS):
 	$(MAKE) -C $@
