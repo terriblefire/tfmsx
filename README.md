@@ -19,7 +19,7 @@ TFMSX is an open-source hardware implementation of the MSX2 standard that combin
 - **512KB RAM**: Memory mapper providing 32 banks of 16KB
 - **Real-time Clock**: RP5C01A battery-backed RTC
 - **Expansion Slots**: Support for cartridges and expansion boards
-- **JAMMA Adapter**: Optional JAMMA connector board for arcade cabinet integration
+- **JAMMA Adapter**: Optional JAMMA connector board for arcade cabinet integration (WIP)
 - **Multiple Revisions**: Hardware evolved through rev0 → rev1 → rev2 with improvements
 
 ## Hardware Revisions
@@ -297,5 +297,6 @@ https://creativecommons.org/licenses/by-nd/4.0/
 ## Contact
 
 For questions, issues, or contributions, please use the GitHub issue tracker.
+
 
 
