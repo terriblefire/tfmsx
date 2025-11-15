@@ -26,7 +26,8 @@ jobs:
     - name: Build CPLD firmware
       run: |
         cd boards
-        docker run --rm --platform linux/amd64 -v $PWD/..:/host -w /host/boards terriblefire78/xilinx make jeds
+        GITVERSION=$(git rev-parse --short HEAD)
+        docker run --rm --platform linux/amd64 -v $PWD/..:/host -w /host/boards -e GITVERSION=$GITVERSION terriblefire78/xilinx make jeds
 
     - name: Upload JED files
       uses: actions/upload-artifact@v4

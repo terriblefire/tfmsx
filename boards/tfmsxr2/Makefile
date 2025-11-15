@@ -6,7 +6,7 @@ RTLFOLDER=../../rtl/
 SOURCES="$(RTLFOLDER)/$(BOARD)_top.v $(RTLFOLDER)/clocks.v $(RTLFOLDER)/rp5c01a.v"
 #PART=XC95144XL-10-TQ144
 
-GITVERSION:=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+GITVERSION?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 
 all: $(BOARD)r$(REVISION)
 include ../Makefile.inc
