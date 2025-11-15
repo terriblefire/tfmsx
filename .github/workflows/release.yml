@@ -1,0 +1,142 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Get version info
+      id: version
+      run: |
+        GITVERSION=$(git rev-parse --short HEAD)
+        DATESTRING=$(date +"%Y_%m_%d")
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION="snapshot_${DATESTRING}_${GITVERSION}"
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "gitversion=$GITVERSION" >> $GITHUB_OUTPUT
+        echo "datestring=$DATESTRING" >> $GITHUB_OUTPUT
+        echo "Release version: $VERSION"
+
+    - name: Build CPLD firmware
+      run: |
+        cd boards
+        GITVERSION=${{ steps.version.outputs.gitversion }}
+        docker run --rm --platform linux/amd64 -v $PWD/..:/host -w /host/boards -e GITVERSION=$GITVERSION terriblefire78/xilinx bash -c "git config --global --add safe.directory /host && make jeds"
+
+    - name: Generate Gerbers
+      run: |
+        cd eagle
+        docker run --rm -v $(pwd):/work -w /work terriblefire78/eagle:v1 eagle -X -dCAMJOB -jjlcpcb_4_layer_v9.cam -otfmsx_${{ steps.version.outputs.gitversion }}_${{ steps.version.outputs.datestring }} tfmsx.brd
+
+    - name: Create Gerber ZIP
+      run: |
+        cd eagle
+        GERBER_DIR="tfmsx_${{ steps.version.outputs.gitversion }}_${{ steps.version.outputs.datestring }}"
+        zip -r ${GERBER_DIR}.zip ${GERBER_DIR}
+
+    - name: Generate schematic PDF
+      run: |
+        cd eagle
+        docker run --rm -v $(pwd):/work -w /work terriblefire78/eagle-pdf python /app/generate_schematic_pdf.py tfmsx.sch tfmsx_${{ steps.version.outputs.gitversion }}_${{ steps.version.outputs.datestring }}.pdf
+
+    - name: Generate BOM and CPL
+      run: |
+        cd eagle
+        python3 extract_bom.py tfmsx.sch tfmsx_bom.csv
+        python3 extract_cpl.py tfmsx.brd tfmsx_cpl.csv
+
+    - name: Create release package
+      run: |
+        mkdir -p release
+        VERSION=${{ steps.version.outputs.version }}
+        PACKAGE_NAME="tfmsx_${VERSION}"
+
+        # Create package directory structure
+        mkdir -p release/${PACKAGE_NAME}/{firmware,pcb,assembly,docs}
+
+        # Copy firmware
+        cp boards/tfmsxr2/*.jed release/${PACKAGE_NAME}/firmware/
+
+        # Copy PCB files
+        cp eagle/tfmsx_*.zip release/${PACKAGE_NAME}/pcb/
+
+        # Copy schematic
+        cp eagle/tfmsx_*.pdf release/${PACKAGE_NAME}/docs/
+
+        # Copy assembly files
+        cp eagle/tfmsx_bom.csv release/${PACKAGE_NAME}/assembly/
+        cp eagle/tfmsx_cpl.csv release/${PACKAGE_NAME}/assembly/
+
+        # Create README for the release
+        cat > release/${PACKAGE_NAME}/README.txt <<EOF
+TFMSX Release ${VERSION}
+========================
+
+This package contains all files needed to manufacture and program the TFMSX board.
+
+Contents:
+---------
+firmware/       - CPLD programming files (.jed)
+pcb/            - Gerber files for PCB manufacturing
+assembly/       - BOM and CPL files for PCB assembly
+docs/           - Schematic PDF
+
+Manufacturing:
+--------------
+1. Use the Gerber ZIP in pcb/ to order PCBs from your preferred manufacturer
+2. Use the BOM (Bill of Materials) and CPL (Component Placement List) in assembly/
+   for PCB assembly services like JLCPCB
+3. Program the CPLD using the JED file in firmware/
+
+For more information, visit: https://github.com/terriblefire/tfmsx
+EOF
+
+        # Create release ZIP
+        cd release
+        zip -r ${PACKAGE_NAME}.zip ${PACKAGE_NAME}
+
+    - name: Upload release package
+      uses: actions/upload-artifact@v4
+      with:
+        name: tfmsx-release-${{ steps.version.outputs.version }}
+        path: release/tfmsx_${{ steps.version.outputs.version }}.zip
+        retention-days: 90
+
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: release/tfmsx_${{ steps.version.outputs.version }}.zip
+        body: |
+          TFMSX Release ${{ steps.version.outputs.version }}
+
+          This release includes:
+          - CPLD firmware (JED files)
+          - PCB Gerbers for manufacturing
+          - BOM and CPL for assembly
+          - Schematic PDF
+
+          See README.txt in the package for details.
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
