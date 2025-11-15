@@ -95,12 +95,14 @@ def group_parts(parts: List[Dict[str, str]]) -> List[Tuple[str, str, str, str]]:
 
 
 def write_bom_csv(bom: List[Tuple[str, str, str, str]], output_file: str):
-    """Write BOM to CSV file."""
+    """Write BOM to CSV file in JLCPCB format."""
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['Comment', 'Designator', 'Footprint', 'LCSC Part #'])
         for row in bom:
-            writer.writerow(row)
+            # Match ULP format: empty comment becomes empty field
+            comment = row[0] if row[0] else ''
+            writer.writerow([comment, row[1], row[2], row[3]])
 
     print(f"BOM written to {output_file}")
     print(f"Total unique parts: {len(bom)}")

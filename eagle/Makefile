@@ -29,9 +29,20 @@ pdf: $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf
 .PHONY: bom
 bom: $(BOARDPREFIX)_bom.csv
 
+.PHONY: cpl
+cpl: $(BOARDPREFIX)_cpl.csv
+
+.PHONY: jlcpcb
+jlcpcb: bom cpl
+	@echo "Generated BOM and CPL files for JLCPCB assembly"
+
 $(BOARDPREFIX)_bom.csv: $(BOARDPREFIX).sch extract_bom.py
 	@echo "Generating BOM from $(BOARDPREFIX).sch..."
 	python3 extract_bom.py $(BOARDPREFIX).sch $@
+
+$(BOARDPREFIX)_cpl.csv: $(BOARDPREFIX).brd extract_cpl.py
+	@echo "Generating CPL from $(BOARDPREFIX).brd..."
+	python3 extract_cpl.py $(BOARDPREFIX).brd $@
 
 # Main board gerber generation
 $(GERBERS).zip: $(GERBERS)
@@ -53,7 +64,7 @@ $(BOARDPREFIX)_$(GITVERSION)_$(DATESTRING).pdf: $(BOARDPREFIX).sch
 
 # Clean targets
 .PHONY: clean
-clean: clean-gerbers clean-pdf clean-bom
+clean: clean-gerbers clean-pdf clean-bom clean-cpl
 	@echo "Cleaned generated files"
 
 .PHONY: clean-pdf
@@ -65,6 +76,11 @@ clean-pdf:
 clean-bom:
 	rm -f *_bom.csv
 	@echo "Cleaned BOM files"
+
+.PHONY: clean-cpl
+clean-cpl:
+	rm -f *_cpl.csv
+	@echo "Cleaned CPL files"
 
 .PHONY: clean-gerbers
 clean-gerbers:
@@ -97,9 +113,13 @@ help:
 	@echo "  camfiles      - Generate Gerber files only (no ZIP)"
 	@echo "  pdf           - Generate PDF schematic for main board"
 	@echo "  bom           - Generate Bill of Materials CSV from schematic"
-	@echo "  clean         - Remove generated PDF and Gerber files"
+	@echo "  cpl           - Generate Component Placement List CSV from board"
+	@echo "  jlcpcb        - Generate both BOM and CPL for JLCPCB assembly"
+	@echo "  clean         - Remove all generated files"
 	@echo "  clean-gerbers - Remove Gerber files and directories"
 	@echo "  clean-pdf     - Remove PDF files"
+	@echo "  clean-bom     - Remove BOM files"
+	@echo "  clean-cpl     - Remove CPL files"
 	@echo "  distclean     - Remove all generated files"
 	@echo "  help          - Show this help message"
 	@echo ""
