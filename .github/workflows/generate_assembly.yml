@@ -1,14 +1,16 @@
-name: Generate BOM
+name: Generate Assembly Files
 
 on:
   push:
     paths:
       - 'eagle/*.sch'
+      - 'eagle/*.brd'
       - 'eagle/extract_bom.py'
+      - 'eagle/extract_cpl.py'
   workflow_dispatch:
 
 jobs:
-  generate-bom:
+  generate-assembly:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,19 +22,29 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Generate BOM
+      - name: Generate BOM and CPL
         run: |
           cd eagle
-          python3 extract_bom.py tfmsx.sch tfmsx_bom.csv
+          make assembly
 
       - name: Upload BOM as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: bom-csv
+          name: assembly-bom
           path: eagle/tfmsx_bom.csv
           retention-days: 90
 
-      - name: Display BOM stats
+      - name: Upload CPL as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: assembly-cpl
+          path: eagle/tfmsx_cpl.csv
+          retention-days: 90
+
+      - name: Display assembly file stats
         run: |
-          echo "BOM generated successfully"
+          echo "Assembly files generated successfully"
+          echo "BOM lines:"
           wc -l eagle/tfmsx_bom.csv
+          echo "CPL lines:"
+          wc -l eagle/tfmsx_cpl.csv

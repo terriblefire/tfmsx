@@ -3,7 +3,7 @@
 [![Run Tests](https://github.com/terriblefire/tfmsx/actions/workflows/run-tests.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/run-tests.yml)
 [![Generate Gerbers](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml)
 [![Generate Schematic PDF](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml)
-[![Generate BOM](https://github.com/terriblefire/tfmsx/actions/workflows/generate_bom.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/generate_bom.yml)
+[![Generate Assembly Files](https://github.com/terriblefire/tfmsx/actions/workflows/generate_assembly.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/generate_assembly.yml)
 
 A homebrew MSX2 machine using as many of the original chips as possible, with custom CPLD logic to implement the MSX slot system, memory mapper, and bus interface.
 
@@ -73,11 +73,11 @@ tfmsx/
 ├── roms/                  # MSX system ROM tools
 │   ├── Makefile           # Automated ROM download and assembly
 │   └── makedefaultroms.sh # Legacy script (deprecated)
-└── .github/workflows/     # CI/CD automation
-    ├── run-tests.yml      # Automated test execution
-    ├── gerbers.yml        # Gerber file generation
-    ├── schematic-pdf.yml  # PDF schematic generation
-    └── generate_bom.yml   # BOM generation
+└── .github/workflows/        # CI/CD automation
+    ├── run-tests.yml         # Automated test execution
+    ├── gerbers.yml           # Gerber file generation
+    ├── schematic-pdf.yml     # PDF schematic generation
+    └── generate_assembly.yml # BOM and CPL generation
 ```
 
 ## Building the CPLD Firmware
@@ -287,28 +287,38 @@ cd eagle
 make               # Generate Gerbers for main TFMSX board
 make pdf           # Generate PDF schematic for main board
 make bom           # Generate Bill of Materials (BOM) CSV
+make cpl           # Generate Component Placement List (CPL) CSV
+make assembly      # Generate both BOM and CPL for assembly
 ```
 
 Output files are named with git commit hash and date (e.g., `tfmsx_a1b2c3d_2025_11_14.zip`).
 
 **Requirements**:
 - Docker with `terriblefire78/eagle:v1` and `terriblefire78/eagle-pdf` images (for gerbers and PDF)
-- Python 3 (for BOM generation)
+- Python 3 (for BOM/CPL generation)
 
-### Bill of Materials (BOM)
+### Assembly Files (BOM and CPL)
 
-Generate a CSV BOM from the schematic:
+Generate assembly files for PCB fabrication and assembly:
 
 ```bash
 cd eagle
-make bom
+make assembly      # Generate both BOM and CPL
 ```
 
-This creates `tfmsx_bom.csv` with columns:
+This creates two files for JLCPCB/PCBA services:
+
+**BOM (`tfmsx_bom.csv`)** contains:
 - **Comment**: Component value/part number
 - **Designator**: Reference designators (e.g., C1, C2, R5)
 - **Footprint**: PCB footprint package
 - **LCSC Part #**: LCSC/JLCPCB part number (if available)
+
+**CPL (`tfmsx_cpl.csv`)** contains:
+- **Designator**: Component reference
+- **Mid X, Mid Y**: Component center position in mm
+- **Layer**: Top or Bottom
+- **Rotation**: Component rotation in degrees
 
 The BOM groups identical components together for easy ordering and assembly.
 

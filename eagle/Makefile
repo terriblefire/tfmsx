@@ -32,9 +32,9 @@ bom: $(BOARDPREFIX)_bom.csv
 .PHONY: cpl
 cpl: $(BOARDPREFIX)_cpl.csv
 
-.PHONY: jlcpcb
-jlcpcb: bom cpl
-	@echo "Generated BOM and CPL files for JLCPCB assembly"
+.PHONY: assembly
+assembly: bom cpl
+	@echo "Generated BOM and CPL files for assembly"
 
 $(BOARDPREFIX)_bom.csv: $(BOARDPREFIX).sch extract_bom.py
 	@echo "Generating BOM from $(BOARDPREFIX).sch..."
@@ -114,7 +114,7 @@ help:
 	@echo "  pdf           - Generate PDF schematic for main board"
 	@echo "  bom           - Generate Bill of Materials CSV from schematic"
 	@echo "  cpl           - Generate Component Placement List CSV from board"
-	@echo "  jlcpcb        - Generate both BOM and CPL for JLCPCB assembly"
+	@echo "  assembly      - Generate both BOM and CPL for assembly"
 	@echo "  clean         - Remove all generated files"
 	@echo "  clean-gerbers - Remove Gerber files and directories"
 	@echo "  clean-pdf     - Remove PDF files"
