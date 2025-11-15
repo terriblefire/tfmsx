@@ -24,8 +24,8 @@ TFMSX is an open-source hardware implementation of the MSX2 standard that combin
 - **512KB RAM**: Memory mapper providing 32 banks of 16KB
 - **Real-time Clock**: RP5C01A battery-backed RTC
 - **Expansion Slots**: Support for cartridges and expansion boards
-- **JAMMA Adapter**: Optional JAMMA connector board for arcade cabinet integration (WIP)
 - **Multiple Revisions**: Hardware evolved through rev0 → rev1 → rev2 with improvements
+- **Comprehensive Testing**: Automated test suite with CI/CD integration
 
 ## Hardware Revisions
 
@@ -53,17 +53,31 @@ tfmsx/
 │   ├── Makefile.inc       # Docker/Xilinx environment setup
 │   └── boards.txt         # List of board configurations
 ├── testsuite/             # Verification test benches
-│   ├── bus/               # Bus interface tests
-│   ├── system/            # System-level integration tests
-│   ├── vdpcheck/          # VDP functionality verification
-│   ├── fastsim/           # Verilator-based cycle simulation
-│   ├── rtl/               # Simulation support files
-│   └── Makefile.inc       # Test environment setup (Docker/iverilog)
+│   ├── bus/               # Bus interface tests (SRAM, ROM, VDP, PSG, slots)
+│   │   ├── test_sram_access.v    # SRAM read/write tests
+│   │   ├── test_rom_access.v     # ROM access tests
+│   │   ├── test_vdp_io.v         # VDP I/O tests
+│   │   ├── test_psg_io.v         # PSG I/O tests
+│   │   ├── test_slot_access.v    # Slot system tests
+│   │   ├── bus_fixture.vinc      # Common test fixture
+│   │   ├── bus_tasks.vinc        # Reusable bus cycle tasks
+│   │   └── Makefile              # Test build rules
+│   ├── rtl/               # Simulation support files (Xilinx primitives)
+│   ├── clocks.vinc        # Clock generation for tests
+│   ├── unittest.vinc      # Test assertion macros
+│   └── Makefile.inc       # Common test environment setup
 ├── eagle/                 # Eagle CAD hardware designs
-│   ├── tfmsx.brd/sch      # Main board (latest revision)
+│   ├── tfmsx.sch/.brd     # Main board schematic and layout
+│   ├── extract_bom.py     # BOM extraction script
+│   └── Makefile           # Automated Gerber/PDF/BOM generation
 ├── roms/                  # MSX system ROM tools
 │   ├── Makefile           # Automated ROM download and assembly
 │   └── makedefaultroms.sh # Legacy script (deprecated)
+└── .github/workflows/     # CI/CD automation
+    ├── run-tests.yml      # Automated test execution
+    ├── gerbers.yml        # Gerber file generation
+    ├── schematic-pdf.yml  # PDF schematic generation
+    └── generate_bom.yml   # BOM generation
 ```
 
 ## Building the CPLD Firmware
@@ -261,9 +275,8 @@ The CPLD logic uses these jumper settings to configure timing and control signal
 
 Eagle CAD schematics and board layouts are in `eagle/`:
 
-- **Main Board**: `tfmsx.sch` / `tfmsx.brd`
-- **JAMMA Adapter**: `tfmsx_jamma.sch` / `tfmsx_jamma.brd`
-- **Previous Revisions**: `tfmsx_rev0.*`, `tfmsx_rev1.*`
+- **Main Board**: `tfmsx.sch` / `tfmsx.brd` (Rev 2 - current design)
+- **Previous Revisions**: `tfmsx_rev0.*`, `tfmsx_rev1.*` (historical reference)
 
 ### Generating Gerber Files
 
