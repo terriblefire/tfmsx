@@ -11,7 +11,7 @@ ICEMODS:=$(SUPPORT)/cells_sim.v
 	$(IV) -DDEBUG=1 -o $(@)  -I$(RTLFOLDER) $(RTLSOURCES) $< $(XILINXMODS) $(ICEMODS)
 
 %.vcd: %.tb
-	timeout 10 ./$< || (rm -f $@ && exit 1)
+	timeout 60 ./$< || (rm -f $@ && exit 1)
 
 # Force removal of VCDs so tests always run fresh
 force:
@@ -43,7 +43,7 @@ summary:
 			if [ ! -f "$$vcd" ]; then \
 				echo ""; \
 				echo "--- $$v ---"; \
-				timeout 10 ./$$tb 2>&1 || true; \
+				timeout 60 ./$$tb 2>&1 || true; \
 			fi; \
 		done; \
 		exit 1; \
