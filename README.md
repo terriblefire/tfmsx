@@ -1,5 +1,9 @@
 # TFMSX
 
+[![Generate Gerbers](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/gerbers.yml)
+[![Generate Schematic PDF](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/schematic-pdf.yml)
+[![Generate BOM](https://github.com/terriblefire/tfmsx/actions/workflows/generate_bom.yml/badge.svg)](https://github.com/terriblefire/tfmsx/actions/workflows/generate_bom.yml)
+
 A homebrew MSX2 machine using as many of the original chips as possible, with custom CPLD logic to implement the MSX slot system, memory mapper, and bus interface.
 
 ## Overview
