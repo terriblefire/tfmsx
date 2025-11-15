@@ -8,6 +8,10 @@
 
 A homebrew MSX2 machine using as many of the original chips as possible, with custom CPLD logic to implement the MSX slot system, memory mapper, and bus interface.
 
+## Discord 
+
+https://discord.gg/aXGkKWJQ
+
 ## Overview
 
 TFMSX is an open-source hardware implementation of the MSX2 standard that combines authentic MSX chips (VDP, PSG, CPU) with modern programmable logic. The design uses a Xilinx XC95288XL CPLD to handle:
@@ -362,6 +366,7 @@ https://creativecommons.org/licenses/by-nd/4.0/
 ## Contact
 
 For questions, issues, or contributions, please use the GitHub issue tracker.
+
 
 
 
