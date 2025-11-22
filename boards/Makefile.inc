@@ -2,7 +2,7 @@ UNAME := $(shell uname)
 XILINXENV:=
 SRCROOT:=$(abspath $(PWD)/../../)
 BRDROOT:=$(subst $(SRCROOT),,$(abspath $(PWD)))
-DOCKERIMAGE:=xilinx
+DOCKERIMAGE:=terriblefire78/xilinx:latest
 
 ifneq ($(UNAME), Linux)
       DOCKERHASH:=$(shell docker images -q $(DOCKERIMAGE) )

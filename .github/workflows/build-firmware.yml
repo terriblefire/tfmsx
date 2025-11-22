@@ -30,7 +30,7 @@ jobs:
       run: |
         cd boards
         GITVERSION=$(git rev-parse --short HEAD)
-        docker run --rm --platform linux/amd64 -v $PWD/..:/host -w /host/boards -e GITVERSION=$GITVERSION terriblefire78/xilinx bash -c "git config --global --add safe.directory /host && make jeds"
+        docker run --rm --platform linux/amd64 -v $PWD/..:/host -w /host/boards -e GITVERSION=$GITVERSION terriblefire78/xilinx:latest bash -c "git config --global --add safe.directory /host && make jeds"
 
     - name: Upload JED files
       uses: actions/upload-artifact@v4
