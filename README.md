@@ -8,9 +8,11 @@
 
 A homebrew MSX2 machine using as many of the original chips as possible, with custom CPLD logic to implement the MSX slot system, memory mapper, and bus interface.
 
-## Discord 
+## Discord
 
-https://discord.gg/aXGkKWJQ
+Join the TF discord for help 
+
+https://discord.gg/Q5zfusgnmH 
 
 ## Overview
 
